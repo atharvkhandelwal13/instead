@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f1115">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Instead">
+<title>Instead</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f1115;--card:#181b22;--card2:#20242d;--line:#2a2f3a;
+  --text:#ecedf3;--muted:#8b90a3;--accent:#8fa8ff;--accent2:#b69cff;
+  --green:#4ade80;--red:#f87171;--amber:#fbbf24;
+  --r:16px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;font-size:15px;line-height:1.45}
+body{padding-top:env(safe-area-inset-top);padding-bottom:calc(72px + env(safe-area-inset-bottom))}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px 6px;max-width:560px;margin:0 auto}
+.brand{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:24px;letter-spacing:-.5px}
+.brand span{color:var(--accent)}
+.hdr-right{display:flex;align-items:center;gap:8px}
+#sync{font-size:11px;color:var(--muted)}
+.icon-btn{width:36px;height:36px;border-radius:12px;background:var(--card);display:grid;place-items:center;font-size:17px}
+main{max-width:560px;margin:0 auto;padding:6px 16px 20px}
+h2{font-family:'Space Grotesk',sans-serif;font-size:20px;margin:18px 2px 10px;letter-spacing:-.3px}
+h3{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:22px 2px 10px;font-weight:600}
+.card{background:var(--card);border-radius:var(--r);padding:14px;margin-bottom:10px;border:1px solid var(--line)}
+.muted{color:var(--muted)}
+.small{font-size:12.5px}
+.row{display:flex;align-items:center;gap:10px}
+.between{justify-content:space-between}
+.grow{flex:1;min-width:0}
+.btn{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:10px 14px;font-weight:600}
+.btn.primary{background:var(--accent);color:#0f1115;border-color:transparent}
+.btn.danger{background:rgba(248,113,113,.14);color:var(--red);border-color:rgba(248,113,113,.3)}
+.btn.block{width:100%;display:block}
+.btn:disabled{opacity:.5}
+input[type=text],input[type=number],textarea{width:100%;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:11px 12px;outline:none}
+input:focus,textarea:focus{border-color:var(--accent)}
+textarea{resize:vertical;min-height:84px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:var(--card2);border:1px solid var(--line);border-radius:999px;padding:8px 13px;font-size:14px}
+.chip.on{background:rgba(143,168,255,.16);border-color:var(--accent);color:var(--accent)}
+.chip.done{opacity:.45;text-decoration:line-through}
+.pick-btn{width:100%;padding:18px;border-radius:var(--r);background:linear-gradient(135deg,var(--accent),var(--accent2));color:#0f1115;font-weight:700;font-size:17px;font-family:'Space Grotesk',sans-serif}
+.pick-result{text-align:center;padding:18px 14px}
+.pick-result .big{font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700;margin:4px 0}
+.status{border-radius:var(--r);padding:12px 14px;margin-bottom:10px;display:flex;align-items:center;gap:10px;font-weight:500}
+.status.lock{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.25)}
+.status.ok{background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.22)}
+.status.run{background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.3)}
+.hero{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;margin:10px 2px 14px;letter-spacing:-.4px;line-height:1.25}
+.hero span{color:var(--accent)}
+.seg{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:10px;scrollbar-width:none}
+.seg::-webkit-scrollbar{display:none}
+.seg .chip{white-space:nowrap}
+.note{padding:12px 14px}
+.note .txt{white-space:pre-wrap;word-wrap:break-word}
+.note .meta{font-size:11.5px;color:var(--muted);margin-top:6px}
+.note .acts{display:flex;gap:8px;margin-top:10px}
+.todo{display:flex;align-items:center;gap:12px;padding:12px 14px}
+.cb{width:24px;height:24px;border-radius:8px;border:2px solid var(--muted);flex:none;display:grid;place-items:center;font-size:14px}
+.cb.on{background:var(--green);border-color:var(--green);color:#0f1115}
+.todo .txt.done{text-decoration:line-through;color:var(--muted)}
+.x{color:var(--muted);font-size:18px;padding:4px 6px}
+.habit .name{font-weight:700;font-size:16px}
+.bar{height:6px;background:var(--card2);border-radius:99px;overflow:hidden;margin:10px 0 8px}
+.bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:99px}
+.dots{display:flex;flex-wrap:wrap;gap:4px;margin:10px 0}
+.dot{width:11px;height:11px;border-radius:3px;background:var(--card2)}
+.dot.y{background:var(--green)}
+.dot.n{background:rgba(248,113,113,.55)}
+.dot.t{outline:2px solid var(--accent);outline-offset:1px}
+.badge{font-size:11px;padding:3px 8px;border-radius:99px;background:var(--card2);color:var(--muted);white-space:nowrap}
+.donebtn{width:100%;margin-top:4px}
+.donebtn.on{background:rgba(74,222,128,.14);color:var(--green);border-color:rgba(74,222,128,.35)}
+.bignum{font-family:'Space Grotesk',sans-serif;font-size:30px;font-weight:700;line-height:1}
+.archive-row{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.archive-row:last-child{border-bottom:0}
+.radio{display:flex;gap:10px;align-items:flex-start;padding:10px;border-radius:12px;border:1px solid var(--line);background:var(--card2);margin-bottom:8px}
+.radio.on{border-color:var(--accent)}
+.radio .r{width:18px;height:18px;border-radius:50%;border:2px solid var(--muted);flex:none;margin-top:2px}
+.radio.on .r{border:5px solid var(--accent)}
+.empty{text-align:center;color:var(--muted);padding:24px 10px}
+nav{position:fixed;left:0;right:0;bottom:0;background:rgba(15,17,21,.94);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--line);display:flex;justify-content:center;padding-bottom:env(safe-area-inset-bottom);z-index:5}
+nav .in{display:flex;max-width:560px;width:100%}
+nav button{flex:1;padding:10px 0 9px;display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--muted);font-size:11px;font-weight:600}
+nav button .ic{font-size:20px;filter:grayscale(1);opacity:.7}
+nav button.on{color:var(--text)}
+nav button.on .ic{filter:none;opacity:1}
+#modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:flex-end;justify-content:center;z-index:10}
+#modal[hidden]{display:none}
+.sheet{background:var(--card);width:100%;max-width:560px;border-radius:22px 22px 0 0;padding:20px 18px calc(20px + env(safe-area-inset-bottom));max-height:88vh;overflow:auto;border:1px solid var(--line);border-bottom:0}
+.sheet h4{font-family:'Space Grotesk',sans-serif;font-size:20px;margin:0 0 8px}
+.sheet .btns{display:flex;flex-direction:column;gap:8px;margin-top:16px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom));background:var(--card2);border:1px solid var(--line);padding:10px 16px;border-radius:12px;font-size:14px;z-index:20;transition:opacity .3s}
+.mt{margin-top:10px}
+.gap8{display:flex;flex-direction:column;gap:8px}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">Instead<span>.</span></div>
+  <div class="hdr-right"><div id="sync">…</div><button class="icon-btn" data-act="settings" aria-label="Settings">⚙️</button></div>
+</header>
+<main id="view"></main>
+<nav><div class="in">
+  <button data-act="tab" data-tab="now"><span class="ic">🎯</span>What now</button>
+  <button data-act="tab" data-tab="capture"><span class="ic">💡</span>Capture</button>
+  <button data-act="tab" data-tab="habits"><span class="ic">🔥</span>Habits</button>
+  <button data-act="tab" data-tab="todos"><span class="ic">✅</span>Todos</button>
+</div></nav>
+<div id="modal" hidden></div>
+
+<script>
+/* ---------- constants ---------- */
+const CATS=[
+  {id:'build',label:'Build ideas',icon:'💡'},
+  {id:'poem',label:'Poems & quotes',icon:'✍️'},
+  {id:'real',label:'Realisations',icon:'🧠'},
+  {id:'self',label:'Self-talk',icon:'🗣️'}
+];
+const PROTOCOL_DAYS=66;          // habit building protocol length
+const CONTENT_HOUR=18;           // online content allowed from 6pm
+const CONTENT_LIMIT=30;          // minutes per day
+const HABIT_SUGGEST=['French','English (PTE)','Reading','Pranayam'];
+const LS='instead_v1';
+
+/* ---------- date helpers ---------- */
+const pad=n=>String(n).padStart(2,'0');
+const keyOf=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const today=()=>keyOf(new Date());
+const parseKey=k=>{const[y,m,d]=k.split('-').map(Number);return new Date(y,m-1,d)};
+const addDays=(k,n)=>{const d=parseKey(k);d.setDate(d.getDate()+n);return keyOf(d)};
+const diffDays=(a,b)=>{const A=parseKey(a),B=parseKey(b);return Math.round((Date.UTC(B.getFullYear(),B.getMonth(),B.getDate())-Date.UTC(A.getFullYear(),A.getMonth(),A.getDate()))/864e5)};
+const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const fmt=k=>{const d=parseKey(k);return d.getDate()+' '+MON[d.getMonth()]+' '+d.getFullYear()};
+const fmtShort=ts=>{const d=new Date(ts);return d.getDate()+' '+MON[d.getMonth()]+', '+pad(d.getHours())+':'+pad(d.getMinutes())};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+
+/* ---------- state ---------- */
+function defaults(){return{
+  v:1,updatedAt:0,
+  ideas:[],habits:[],archive:[],todos:[],
+  activities:['📖 Read a book','🏓 Play TT','♟️ Chess','💻 Continue project','🧘 Meditate','🌬️ Pranayam','🇫🇷 French practice','🗣️ English (PTE)'],
+  insta:{start:today(),slips:{}},
+  content:{log:{},running:null}
+}}
+function normalize(s){
+  const d=defaults(); if(!s||typeof s!=='object') return d;
+  const o=Object.assign(d,s);
+  o.insta=Object.assign(defaults().insta,s.insta||{});
+  o.content=Object.assign({log:{},running:null},s.content||{});
+  ['ideas','habits','archive','todos','activities'].forEach(k=>{if(!Array.isArray(o[k]))o[k]=d[k]||[]});
+  return o;
+}
+let state;
+try{state=normalize(JSON.parse(localStorage.getItem(LS)))}catch(e){state=defaults()}
+
+let ui={tab:'now',cat:'build',open:null,pick:null,go:null,ideaSeed:0,showDone:false,newHabit:{name:'',mode:'protocol',days:30},delArm:null};
+try{const t=localStorage.getItem(LS+'_tab');if(t)ui.tab=t}catch(e){}
+
+/* ---------- persistence (cloud db + local cache) ---------- */
+let ref=null,writing=false,pending=false,syncMode='local';
+function save(){
+  state.updatedAt=Date.now();
+  try{localStorage.setItem(LS,JSON.stringify(state))}catch(e){}
+  clearTimeout(save._t); save._t=setTimeout(flush,600);
+}
+async function flush(){
+  if(!ref) return;
+  if(writing){pending=true;return}
+  writing=true;
+  try{await ref.set({json:JSON.stringify(state),updatedAt:state.updatedAt});setSync('cloud')}
+  catch(e){
+    if(e&&e.code==='unavailable'){setTimeout(flush,1500+Math.random()*1500)}
+    else if(e&&e.code==='quota_exceeded'){toast('Cloud storage is full, saving on this phone only')}
+    else setSync('local');
+  }
+  writing=false;
+  if(pending){pending=false;flush()}
+}
+function setSync(m){syncMode=m;const el=document.getElementById('sync');if(el)el.textContent=m==='cloud'?'☁️ synced':'📱 this device';}
+(async function initCloud(){
+  const timer=setTimeout(()=>setSync('local'),10000);
+  try{
+    if(!window.claude||!window.claude.use){clearTimeout(timer);setSync('local');return}
+    const [db,user]=await Promise.all([window.claude.use('db'),window.claude.use('user')]);
+    if(!db||!user){clearTimeout(timer);setSync('local');return}
+    const id=await user.id();
+    if(!id){clearTimeout(timer);setSync('local');return}
+    ref=db.collection('data/users/'+id).doc('state');
+    const snap=await ref.get();
+    clearTimeout(timer);
+    if(snap.exists){
+      const body=snap.data()||{};
+      let remote=null;try{remote=JSON.parse(body.json)}catch(e){}
+      if(remote&&(remote.updatedAt||0)>=(state.updatedAt||0)){
+        state=normalize(remote);
+        try{localStorage.setItem(LS,JSON.stringify(state))}catch(e){}
+        archiveCheck();render();
+      }else if(state.updatedAt){flush()}
+    }else if(state.updatedAt){flush()}
+    setSync('cloud');
+  }catch(e){clearTimeout(timer);setSync('local')}
+})();
+
+/* ---------- habit logic ---------- */
+const habitEnd=h=>addDays(h.start,h.days-1);
+const doneCount=h=>Object.keys(h.done||{}).filter(k=>k>=h.start&&k<=habitEnd(h)).length;
+function archiveCheck(){
+  const t=today();let changed=false;
+  state.habits=state.habits.filter(h=>{
+    if(t>habitEnd(h)){
+      state.archive.unshift({name:h.name,start:h.start,end:habitEnd(h),done:doneCount(h),days:h.days,mode:h.mode});
+      changed=true;return false;
+    }return true;
+  });
+  if(changed)save();
+}
+
+/* ---------- content (online watching) logic ---------- */
+const contentToday=()=>state.content.log[today()]||{min:0,broke:false};
+function runningMin(){const r=state.content.running;return r?(Date.now()-r.start)/60000:0}
+function contentUsed(){return contentToday().min+runningMin()}
+function contentLocked(){return new Date().getHours()<CONTENT_HOUR}
+
+/* ---------- render ---------- */
+const view=document.getElementById('view');
+function render(){
+  document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.tab===ui.tab));
+  view.innerHTML=({now:renderNow,capture:renderCapture,habits:renderHabits,todos:renderTodos})[ui.tab]();
+  tick();
+}
+
+function contentStatus(){
+  const r=state.content.running;
+  if(r){return `<div class="status run"><span>⏱️</span><div class="grow">Watching: <b id="clock">--</b><div class="small muted" id="clockNote"></div></div><button class="btn" data-act="stopWatch">Stop</button></div>`}
+  const used=Math.round(contentToday().min);
+  if(contentLocked()) return `<div class="status lock"><span>📵</span><div class="grow">Online content is locked until 6pm<div class="small muted">Pick something below instead 👇</div></div></div>`;
+  const left=Math.max(0,CONTENT_LIMIT-used);
+  if(left<=0) return `<div class="status lock"><span>🚫</span><div class="grow">Today's 30 min of content is used up</div></div>`;
+  return `<div class="status ok"><span>📺</span><div class="grow">${left} min of content left today</div><button class="btn" data-act="startWatch">Start timer</button></div>`;
+}
+
+function renderNow(){
+  const t=today();
+  const pending=state.habits.filter(h=>!(h.done||{})[t]);
+  const todos=state.todos.filter(x=>!x.done).slice(0,3);
+  const builds=state.ideas.filter(i=>i.cat==='build');
+  let idea=null;
+  if(builds.length){idea=builds[(diffDays('2026-01-01',t)+ui.ideaSeed)%builds.length]}
+  let h=`<div class="hero">Bored? Don't open YouTube.<br><span>Do one of these instead.</span></div>`;
+  h+=contentStatus();
+  h+=`<button class="pick-btn" data-act="pick">🎲 Pick for me</button>`;
+  if(ui.pick){h+=`<div class="card pick-result mt"><div class="muted small">Go do this now</div><div class="big">${esc(ui.pick)}</div><div class="row mt" style="justify-content:center"><button class="btn" data-act="pick">Another one</button><button class="btn primary" data-act="clearPick">On it 💪</button></div></div>`}
+  h+=`<h3 class="row between"><span>Things I could do</span><button class="small" style="color:var(--accent);text-transform:none;letter-spacing:0" data-act="editActs">Edit</button></h3>`;
+  h+=`<div class="chips">${state.activities.map((a,i)=>`<button class="chip ${ui.go===i?'on':''}" data-act="go" data-i="${i}">${esc(a)}</button>`).join('')||'<span class="muted">Add some activities with Edit</span>'}</div>`;
+  if(state.habits.length){
+    h+=`<h3>Habits left today</h3>`;
+    h+=pending.length?`<div class="chips">${pending.map(x=>`<button class="chip" data-act="habitToggle" data-id="${x.id}">○ ${esc(x.name)}</button>`).join('')}</div>`:`<div class="card muted">All habits done today 🔥</div>`;
+  }
+  if(todos.length){
+    h+=`<h3>Next todos</h3>`+todos.map(todoRow).join('');
+  }
+  if(idea){
+    h+=`<h3>Remember this idea?</h3><div class="card note"><div class="txt">${esc(idea.text)}</div><div class="meta">💡 ${fmtShort(idea.ts)}</div>${builds.length>1?`<div class="acts"><button class="btn" data-act="nextIdea">Show another</button></div>`:''}</div>`;
+  }
+  return h;
+}
+
+function renderCapture(){
+  const cat=CATS.find(c=>c.id===ui.cat);
+  const list=state.ideas.filter(i=>i.cat===ui.cat).sort((a,b)=>b.ts-a.ts);
+  let h=`<h2>Capture</h2><div class="seg">${CATS.map(c=>`<button class="chip ${c.id===ui.cat?'on':''}" data-act="cat" data-cat="${c.id}">${c.icon} ${c.label} <span class="muted">${state.ideas.filter(i=>i.cat===c.id).length}</span></button>`).join('')}</div>`;
+  h+=`<div class="card"><textarea id="ideaIn" placeholder="${cat.icon} New ${cat.label.toLowerCase().replace(/s$/,'').replace(' & quote','')}…"></textarea><button class="btn primary block mt" data-act="addIdea">Save</button></div>`;
+  if(!list.length) h+=`<div class="empty">Nothing here yet. Dump the next thought that pops up.</div>`;
+  h+=list.map(i=>{
+    const open=ui.open===i.id;
+    return `<div class="card note" data-act="openIdea" data-id="${i.id}"><div class="txt">${esc(i.text)}</div><div class="meta">${fmtShort(i.ts)}${i.edited?' · edited':''}</div>${open?`<div class="acts"><button class="btn" data-act="editIdea" data-id="${i.id}">Edit</button><button class="btn danger" data-act="delIdea" data-id="${i.id}">${ui.delArm===i.id?'Tap again to delete':'Delete'}</button></div>`:''}</div>`;
+  }).join('');
+  return h;
+}
+
+function habitCard(x){
+  const t=today(),end=habitEnd(x),dayN=Math.min(x.days,diffDays(x.start,t)+1),dc=doneCount(x);
+  const isDone=!!(x.done||{})[t];
+  let dots='';
+  for(let i=0;i<x.days;i++){
+    const k=addDays(x.start,i);
+    const cls=k>t?'':(x.done||{})[k]?'y':(k===t?'':'n');
+    dots+=`<i class="dot ${cls} ${k===t?'t':''}"></i>`;
+  }
+  return `<div class="card habit">
+    <div class="row between"><div class="name">🔒 ${esc(x.name)}</div><span class="badge">${x.mode==='protocol'?'Protocol':'Custom'} · ${x.days}d</span></div>
+    <div class="small muted" style="margin-top:4px">Day ${dayN} of ${x.days} · ends ${fmt(end)}</div>
+    <div class="bar"><i style="width:${Math.round(dc/x.days*100)}%"></i></div>
+    <div class="small"><b>${dc}</b><span class="muted">/${x.days} days done · missed ${Math.max(0,dayN-dc-(isDone?0:1))}</span></div>
+    <div class="dots">${dots}</div>
+    <button class="btn donebtn ${isDone?'on':''}" data-act="habitToggle" data-id="${x.id}">${isDone?'✓ Done today':'Mark done today'}</button>
+  </div>`;
+}
+
+function renderHabits(){
+  const t=today();
+  let h=`<h2>Habits</h2><h3>Building</h3>`;
+  h+=state.habits.length?state.habits.map(habitCard).join(''):`<div class="empty">No habits running. Start one below. Once you start it, it's locked in.</div>`;
+  const nh=ui.newHabit;
+  h+=`<div class="card"><div style="font-weight:700;margin-bottom:8px">➕ Start a new habit</div>
+    <input type="text" id="hName" placeholder="e.g. French" value="${esc(nh.name)}">
+    <div class="chips mt">${HABIT_SUGGEST.filter(s=>!state.habits.some(x=>x.name.toLowerCase()===s.toLowerCase())).map(s=>`<button class="chip" data-act="hSuggest" data-name="${esc(s)}">${esc(s)}</button>`).join('')}</div>
+    <div class="mt">
+      <div class="radio ${nh.mode==='protocol'?'on':''}" data-act="hMode" data-mode="protocol"><i class="r"></i><div><b>Habit building protocol: ${PROTOCOL_DAYS} days</b><div class="small muted">Roughly how long it takes for something to become automatic</div></div></div>
+      <div class="radio ${nh.mode==='custom'?'on':''}" data-act="hMode" data-mode="custom"><i class="r"></i><div class="grow"><b>Custom length</b><div class="small muted">For goals with a deadline, like PTE prep</div>${nh.mode==='custom'?`<div class="row mt"><input type="number" id="hDays" min="1" max="1000" value="${nh.days}" style="width:100px"><span class="muted">days</span></div>`:''}</div></div>
+    </div>
+    <button class="btn primary block mt" data-act="hStart">Start & lock 🔒</button>
+  </div>`;
+
+  // breaking
+  h+=`<h3>Breaking</h3>`;
+  const slips=state.insta.slips||{};
+  const slipDays=Object.keys(slips).filter(k=>slips[k]>0).sort();
+  const last=slipDays[slipDays.length-1];
+  const clean=last?diffDays(last,t):diffDays(state.insta.start,t);
+  const slippedToday=slips[t]||0;
+  let d7='';for(let i=6;i>=0;i--){const k=addDays(t,-i);d7+=`<i class="dot ${k<state.insta.start?'':(slips[k]?'n':(k===t?'':'y'))} ${k===t?'t':''}"></i>`}
+  h+=`<div class="card"><div class="row between"><div><div style="font-weight:700">📱 Insta & doomscrolling</div><div class="small muted">Goal: don't open it at all</div></div><div style="text-align:right"><div class="bignum">${clean}</div><div class="small muted">${last&&last===t?'slipped today':'days clean'}</div></div></div>
+    <div class="dots">${d7}</div>
+    <button class="btn block" data-act="slip">😬 I opened it${slippedToday?` (${slippedToday}× today)`:''}</button>
+    ${slippedToday?`<button class="small muted mt" style="display:block;margin-left:auto" data-act="unslip">undo last</button>`:''}
+  </div>`;
+
+  const ct=contentToday(),used=Math.round(contentUsed());
+  let c7='';for(let i=6;i>=0;i--){const k=addDays(t,-i),l=state.content.log[k];c7+=`<i class="dot ${k===t&&!l?'':(l&&l.broke?'n':'y')} ${k===t?'t':''}"></i>`}
+  h+=`<div class="card"><div class="row between"><div><div style="font-weight:700">📺 Online content</div><div class="small muted">Anime, movies, series, YouTube… max ${CONTENT_LIMIT} min, only after 6pm</div></div><div style="text-align:right"><div class="bignum">${used}</div><div class="small muted">/ ${CONTENT_LIMIT} min</div></div></div>
+    <div class="bar"><i style="width:${Math.min(100,used/CONTENT_LIMIT*100)}%;${used>CONTENT_LIMIT?'background:var(--red)':''}"></i></div>
+    <div class="dots">${c7}</div>
+    ${state.content.running?`<button class="btn block" data-act="stopWatch">⏹ Stop timer (<span id="clock2">--</span>)</button>`:`<button class="btn block" data-act="startWatch">▶ Start watching timer</button>`}
+    ${ct.broke?`<div class="small mt" style="color:var(--red)">Rule broken today</div>`:''}
+  </div>`;
+
+  // archive
+  if(state.archive.length){
+    h+=`<h3>Archive</h3><div class="card">${state.archive.map(a=>`<div class="archive-row"><div><b>${esc(a.name)}</b><div class="small muted">${fmt(a.start)} → ${fmt(a.end)}</div></div><div style="text-align:right"><b>${a.done}/${a.days}</b><div class="small muted">${Math.round(a.done/a.days*100)}%</div></div></div>`).join('')}</div>`;
+  }
+  return h;
+}
+
+function todoRow(x){
+  return `<div class="card todo"><button class="cb ${x.done?'on':''}" data-act="todoToggle" data-id="${x.id}">${x.done?'✓':''}</button><div class="grow txt ${x.done?'done':''}">${esc(x.text)}</div><button class="x" data-act="todoDel" data-id="${x.id}" aria-label="delete">×</button></div>`;
+}
+function renderTodos(){
+  const open=state.todos.filter(x=>!x.done),done=state.todos.filter(x=>x.done);
+  let h=`<h2>Todos</h2><div class="card row"><input type="text" id="todoIn" placeholder="Add a todo…" class="grow"><button class="btn primary" data-act="addTodo">Add</button></div>`;
+  h+=open.length?open.map(todoRow).join(''):`<div class="empty">Nothing to do. Suspicious 👀</div>`;
+  if(done.length){
+    h+=`<h3 class="row between"><button data-act="toggleDone" style="color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:600;font-size:13px">Done (${done.length}) ${ui.showDone?'▾':'▸'}</button>${ui.showDone?`<button class="small" style="color:var(--red);text-transform:none;letter-spacing:0" data-act="clearDone">Clear done</button>`:''}</h3>`;
+    if(ui.showDone)h+=done.map(todoRow).join('');
+  }
+  return h;
+}
+
+/* ---------- modal + toast ---------- */
+const modal=document.getElementById('modal');
+function openModal(html){modal.innerHTML=`<div class="sheet">${html}</div>`;modal.hidden=false}
+function closeModal(){modal.hidden=true;modal.innerHTML=''}
+modal.addEventListener('click',e=>{if(e.target===modal)closeModal()});
+function toast(msg){const t=document.createElement('div');t.className='toast';t.textContent=msg;document.body.appendChild(t);setTimeout(()=>{t.style.opacity=0;setTimeout(()=>t.remove(),300)},1800)}
+
+/* ---------- actions ---------- */
+const acts={
+  tab:el=>{ui.tab=el.dataset.tab;ui.open=null;ui.delArm=null;try{localStorage.setItem(LS+'_tab',ui.tab)}catch(e){};render();scrollTo(0,0)},
+  pick:()=>{const a=state.activities;if(!a.length)return;let p;do{p=a[Math.floor(Math.random()*a.length)]}while(a.length>1&&p===ui.pick);ui.pick=p;render()},
+  clearPick:()=>{toast('Go! 🎯');ui.pick=null;render()},
+  go:el=>{const i=+el.dataset.i;ui.go=ui.go===i?null:i;if(ui.go!==null)toast('Go: '+state.activities[i]+' 🎯');render()},
+  nextIdea:()=>{ui.ideaSeed++;render()},
+  editActs:()=>{
+    openModal(`<h4>Things I could do</h4><div class="muted small">These show up on the What now screen and in Pick for me.</div>
+      <div class="gap8 mt">${state.activities.map((a,i)=>`<div class="row card" style="margin:0;padding:10px 12px"><div class="grow">${esc(a)}</div><button class="x" data-act="actDel" data-i="${i}">×</button></div>`).join('')}</div>
+      <div class="row mt"><input type="text" id="actIn" placeholder="e.g. 🎸 Guitar" class="grow"><button class="btn primary" data-act="actAdd">Add</button></div>
+      <div class="btns"><button class="btn" data-act="closeModal">Done</button></div>`);
+  },
+  actDel:el=>{state.activities.splice(+el.dataset.i,1);save();acts.editActs();render()},
+  actAdd:()=>{const v=document.getElementById('actIn').value.trim();if(!v)return;state.activities.push(v);save();acts.editActs();render()},
+  closeModal:()=>closeModal(),
+
+  cat:el=>{ui.cat=el.dataset.cat;ui.open=null;render()},
+  addIdea:()=>{const el=document.getElementById('ideaIn');const v=el.value.trim();if(!v)return;state.ideas.push({id:uid(),cat:ui.cat,text:v,ts:Date.now()});save();render();toast('Saved ✨')},
+  openIdea:el=>{const id=el.dataset.id;if(ui.open!==id){ui.open=id;ui.delArm=null;render()}},
+  editIdea:el=>{const i=state.ideas.find(x=>x.id===el.dataset.id);if(!i)return;
+    openModal(`<h4>Edit</h4><textarea id="editIn" style="min-height:160px">${esc(i.text)}</textarea><div class="btns"><button class="btn primary" data-act="saveEdit" data-id="${i.id}">Save</button><button class="btn" data-act="closeModal">Cancel</button></div>`)},
+  saveEdit:el=>{const i=state.ideas.find(x=>x.id===el.dataset.id);const v=document.getElementById('editIn').value.trim();if(i&&v){i.text=v;i.edited=true;save()}closeModal();render()},
+  delIdea:el=>{const id=el.dataset.id;if(ui.delArm!==id){ui.delArm=id;render();return}state.ideas=state.ideas.filter(x=>x.id!==id);ui.open=null;ui.delArm=null;save();render()},
+
+  hSuggest:el=>{ui.newHabit.name=el.dataset.name;if(/pte/i.test(el.dataset.name)){ui.newHabit.mode='custom';ui.newHabit.days=30}render()},
+  hMode:el=>{readHabitForm();ui.newHabit.mode=el.dataset.mode;render()},
+  hStart:()=>{
+    readHabitForm();const nh=ui.newHabit;const name=nh.name.trim();
+    if(!name){toast('Give the habit a name');return}
+    if(state.habits.some(x=>x.name.toLowerCase()===name.toLowerCase())){toast('That habit is already running');return}
+    const days=nh.mode==='protocol'?PROTOCOL_DAYS:Math.max(1,Math.min(1000,parseInt(nh.days)||0));
+    if(!days){toast('Enter number of days');return}
+    const t=today();
+    openModal(`<h4>Lock in "${esc(name)}"? 🔒</h4>
+      <p>From <b>${fmt(t)}</b> to <b>${fmt(addDays(t,days-1))}</b>, that's ${days} days.</p>
+      <p class="muted">Once you start, you <b>can't edit or delete it</b>. It stays on your list until the ${days} days are over. Either you do it, or you watch yourself not doing it.</p>
+      <div class="btns"><button class="btn primary" data-act="hConfirm" data-days="${days}">Yes, lock it in</button><button class="btn" data-act="closeModal">Not yet</button></div>`);
+  },
+  hConfirm:el=>{
+    const days=+el.dataset.days,name=ui.newHabit.name.trim();
+    state.habits.push({id:uid(),name,start:today(),days,mode:ui.newHabit.mode,done:{}});
+    ui.newHabit={name:'',mode:'protocol',days:30};save();closeModal();render();toast('Locked in 🔒 Day 1 starts now');
+  },
+  habitToggle:el=>{const x=state.habits.find(h=>h.id===el.dataset.id);if(!x)return;x.done=x.done||{};const t=today();if(x.done[t])delete x.done[t];else{x.done[t]=true;toast(x.name+' ✓')}save();render()},
+
+  slip:()=>{const t=today();state.insta.slips[t]=(state.insta.slips[t]||0)+1;save();render();toast('Logged. Close it and pick something on What now.')},
+  unslip:()=>{const t=today();if(state.insta.slips[t]){state.insta.slips[t]--;if(!state.insta.slips[t])delete state.insta.slips[t]}save();render()},
+
+  startWatch:()=>{
+    const now=new Date();
+    if(contentLocked()){
+      openModal(`<h4>Not yet 📵</h4><p>It's ${pad(now.getHours())}:${pad(now.getMinutes())}. Online content opens at <b>6pm</b>.</p><p class="muted">You set this rule yourself. Want to do something else instead?</p>
+        <div class="btns"><button class="btn primary" data-act="insteadPick">🎲 Pick something for me</button><button class="btn danger" data-act="watchAnyway" data-why="early">Watch anyway (logs a broken rule)</button></div>`);return;
+    }
+    if(contentToday().min>=CONTENT_LIMIT){
+      openModal(`<h4>30 min used up 🚫</h4><p class="muted">You've hit today's limit. Tomorrow after 6pm you get a fresh 30.</p>
+        <div class="btns"><button class="btn primary" data-act="insteadPick">🎲 Pick something for me</button><button class="btn danger" data-act="watchAnyway" data-why="over">Watch anyway (logs a broken rule)</button></div>`);return;
+    }
+    state.content.running={start:Date.now(),early:false};save();render();
+  },
+  watchAnyway:()=>{state.content.running={start:Date.now(),early:true};const t=today();const l=state.content.log[t]||{min:0,broke:false};l.broke=true;state.content.log[t]=l;save();closeModal();render()},
+  insteadPick:()=>{closeModal();ui.tab='now';acts.pick()},
+  stopWatch:()=>{
+    const r=state.content.running;if(!r)return;
+    const m=Math.max(1,Math.round((Date.now()-r.start)/60000));
+    const t=today();const l=state.content.log[t]||{min:0,broke:false};
+    l.min+=m;if(r.early||l.min>CONTENT_LIMIT)l.broke=true;
+    state.content.log[t]=l;state.content.running=null;save();render();
+    toast(`Logged ${m} min`);
+  },
+
+  addTodo:()=>{const el=document.getElementById('todoIn');const v=el.value.trim();if(!v)return;state.todos.unshift({id:uid(),text:v,done:false,ts:Date.now()});save();render();setTimeout(()=>{const n=document.getElementById('todoIn');n&&n.focus()},0)},
+  todoToggle:el=>{const x=state.todos.find(t=>t.id===el.dataset.id);if(!x)return;x.done=!x.done;x.doneAt=x.done?Date.now():null;save();render()},
+  todoDel:el=>{state.todos=state.todos.filter(t=>t.id!==el.dataset.id);save();render()},
+  toggleDone:()=>{ui.showDone=!ui.showDone;render()},
+  clearDone:()=>{state.todos=state.todos.filter(t=>!t.done);save();render()},
+
+  settings:()=>{
+    openModal(`<h4>Settings</h4>
+      <p class="small muted">${syncMode==='cloud'?'☁️ Your data is saved to your account, so it shows up on any device where you open this link.':'📱 Your data is saved on this device only. Use Copy backup every now and then so you never lose it.'}</p>
+      <div class="btns">
+        <button class="btn" data-act="copyBackup">📋 Copy backup</button>
+        <button class="btn" data-act="restoreUI">♻️ Restore from backup</button>
+        <button class="btn" data-act="closeModal">Close</button>
+      </div>
+      <p class="small muted mt">Habit protocol = ${PROTOCOL_DAYS} days. Content rule = ${CONTENT_LIMIT} min/day after 6pm.</p>`);
+  },
+  copyBackup:async()=>{try{await navigator.clipboard.writeText(JSON.stringify(state));toast('Backup copied. Paste it somewhere safe.')}catch(e){openModal(`<h4>Copy this backup</h4><textarea style="min-height:200px" readonly onclick="this.select()">${esc(JSON.stringify(state))}</textarea><div class="btns"><button class="btn" data-act="closeModal">Close</button></div>`)}},
+  restoreUI:()=>openModal(`<h4>Restore</h4><p class="small muted">Paste a backup. This replaces everything currently in the app.</p><textarea id="restoreIn" style="min-height:160px"></textarea><div class="btns"><button class="btn danger" data-act="restore">Replace with this backup</button><button class="btn" data-act="closeModal">Cancel</button></div>`),
+  restore:()=>{try{const s=JSON.parse(document.getElementById('restoreIn').value);state=normalize(s);save();archiveCheck();closeModal();render();toast('Restored ✓')}catch(e){toast("That backup doesn't look right")}}
+};
+function readHabitForm(){const n=document.getElementById('hName');if(n)ui.newHabit.name=n.value;const d=document.getElementById('hDays');if(d)ui.newHabit.days=d.value}
+
+document.addEventListener('click',e=>{
+  const el=e.target.closest('[data-act]');if(!el)return;
+  // inner buttons inside an idea card shouldn't trigger the card's open action
+  const fn=acts[el.dataset.act];if(fn){e.stopPropagation();fn(el)}
+});
+document.addEventListener('keydown',e=>{
+  if(e.key!=='Enter')return;
+  if(e.target.id==='todoIn'){e.preventDefault();acts.addTodo()}
+  else if(e.target.id==='actIn'){e.preventDefault();acts.actAdd()}
+  else if(e.target.id==='hName'){e.preventDefault();acts.hStart()}
+});
+document.addEventListener('input',e=>{if(e.target.id==='hName')ui.newHabit.name=e.target.value;if(e.target.id==='hDays')ui.newHabit.days=e.target.value});
+
+/* ---------- live clock ---------- */
+let lastDay=today(),lastLock=contentLocked();
+function tick(){
+  const r=state.content.running;
+  if(r){
+    const s=Math.floor((Date.now()-r.start)/1000);
+    const txt=pad(Math.floor(s/60))+':'+pad(s%60);
+    const c=document.getElementById('clock');if(c)c.textContent=txt;
+    const c2=document.getElementById('clock2');if(c2)c2.textContent=txt;
+    const note=document.getElementById('clockNote');
+    if(note){const left=CONTENT_LIMIT-contentUsed();note.textContent=left>0?Math.ceil(left)+' min left today':'Over the limit by '+Math.ceil(-left)+' min';note.style.color=left>0?'':'var(--red)'}
+  }
+}
+setInterval(()=>{
+  tick();
+  const d=today(),l=contentLocked();
+  if(d!==lastDay||l!==lastLock){lastDay=d;lastLock=l;archiveCheck();render()}
+},1000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden){archiveCheck();render()}});
+
+archiveCheck();render();setSync('local');
+</script>
+</body>
+</html>
